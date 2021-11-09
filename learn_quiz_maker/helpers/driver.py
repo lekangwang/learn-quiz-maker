@@ -6,17 +6,19 @@ import os
 def create_driver ():
     chromedriver_link = "https://chromedriver.chromium.org/downloads"
     chromeversion_link = "chrome://settings/help"
+    chromedriver_path = "learn_quiz_maker/chromedriver"
 
     # Check if the chromedriver.exe file exists
-    if (not os.path.isfile("../chromedriver")):
+    if (not os.path.isfile(chromedriver_path)):
+        print("fucked")
         # Error message
-        print("chromedrive.exe does not exist.")
+        print("chromedriver.exe does not exist.")
         print(f"Check your browser version here: {chromeversion_link}")
         print(f"Please download the correct chromedriver file corresponding to your browser version at: {chromedriver_link}")
         return None
 
     # Initialize a new web driver object
-    service_obj = Service("../chromedriver")
+    service_obj = Service(chromedriver_path)
     driver = webdriver.Chrome(service=service_obj)
 
     # Check the user's Chrome & chromedriver.exe version
@@ -36,3 +38,6 @@ def create_driver ():
     else:
         return driver
 
+# driver = create_driver()
+# driver.get("https://google.ca/")
+# driver.quit()
