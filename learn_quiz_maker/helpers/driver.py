@@ -10,7 +10,6 @@ def create_driver ():
 
     # Check if the chromedriver.exe file exists
     if (not os.path.isfile(chromedriver_path)):
-        print("fucked")
         # Error message
         print("chromedriver.exe does not exist.")
         print(f"Check your browser version here: {chromeversion_link}")
@@ -28,7 +27,6 @@ def create_driver ():
     if browser_version != driver_version:
         # Close the driver/test session 
         driver.quit()
-        print("Triggered")
 
         # Error message
         print("Your chromedriver.exe file does not match your version of Chrome")
