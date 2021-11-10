@@ -20,7 +20,6 @@ def parse_login_settings():
 def login_user(driver):
     settings = parse_login_settings()
     username = settings["Username"]
-    password = settings["Password"]
 
     # # Initialize webdriver
     # driver = create_driver()
@@ -32,10 +31,6 @@ def login_user(driver):
     driver.find_element(By.ID, "userNameInput").send_keys(username, Keys.ENTER)
 
     WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, "passwordInput")))
-
-    # Enter password
-    driver.find_element(By.ID, "passwordInput").click()
-    driver.find_element(By.ID, "passwordInput").send_keys(password, Keys.ENTER)
 
     WebDriverWait(driver, 120).until(EC.url_matches("https://learn.uwaterloo.ca/d2l/home"))
 
