@@ -1,40 +1,10 @@
 from selenium import webdriver
+
+# Webdriver manager will automatically install the 
+# correct driver software for your Chrome version
 from webdriver_manager.chrome import ChromeDriverManager
 
-# Initialize and return a web driver object 
-# def create_driver ():
-#     chromedriver_link = "https://chromedriver.chromium.org/downloads"
-#     chromeversion_link = "chrome://settings/help"
-#     chromedriver_path = "learn_quiz_maker/chromedriver"
-
-#     # Check if the chromedriver.exe file exists
-#     if (not os.path.isfile(chromedriver_path)):
-#         # Error message
-#         print("chromedriver.exe does not exist.")
-#         print(f"Check your browser version here: {chromeversion_link}")
-#         print(f"Please download the correct chromedriver file corresponding to your browser version at: {chromedriver_link}")
-#         return None
-
-#     # Initialize a new web driver object
-#     service_obj = Service(chromedriver_path)
-#     driver = webdriver.Chrome(service=service_obj)
-
-#     # Check the user's Chrome & chromedriver.exe version
-#     browser_version = driver.capabilities["browserVersion"].split(".")[0]
-#     driver_version = driver.capabilities["chrome"]["chromedriverVersion"].split(".")[0]
-
-#     if browser_version != driver_version:
-#         # Close the driver/test session 
-#         driver.quit()
-
-#         # Error message
-#         print("Your chromedriver.exe file does not match your version of Chrome")
-#         print(f"Your Chrome browser version: {browser_version}, chromedriver.exe version: {driver_version}")
-#         print(f"Please download the correct chromedriver file corresponding to your browser version at: {chromedriver_link}")
-#         return None
-#     else:
-#         return driver
-
+# Create a webdriver object with the correct driver software installed
 def create_driver():
     driver = webdriver.Chrome(ChromeDriverManager().install())
     return driver
