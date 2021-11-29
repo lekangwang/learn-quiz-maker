@@ -2,7 +2,7 @@ from pyshadow.main import Shadow
 from selenium.webdriver.common.by import By
 from time import sleep
 import os
-from learn_quiz_maker.helpers.parsers import parse_settings
+from learn_quiz_maker.helpers.parsers import parse_section_names, parse_settings
 from learn_quiz_maker.helpers.util import about, click_element_of_elements, wait_until_page_fully_loaded
 
 # Is the path to the settings CSV file, please DO NOT TOUCH
@@ -36,6 +36,10 @@ def navigate_to_section_form(driver):
 
     # Create a new shadow webdriver with the new webdriver that is focused on the appropriate <frame> tag
     shadow_driver = Shadow(driver)
+
+    section_link_elements = shadow_driver.find_elements(".d2l-link")
+    for s in section_link_elements:
+        print(s.text)
 
     # Find both "New" and "Import" buttons in the quiz library and click "New"
     library_btns = shadow_driver.find_elements(".d2l-buttonmenu-text")
@@ -104,4 +108,3 @@ def create_sections(driver):
         # Focus driver back to whole DOM
         driver.switch_to.default_content()
         print("create_section: Quiz section created!")
-
