@@ -13,9 +13,8 @@ def parse_settings(path, csv_filename):
     csv_path = path + csv_filename
 
     # Open the csv file, 
-    # convert csv file to a list of objects, 
-    # return the first object
+    # convert csv file to a list of objects
     with open(csv_path) as s:
-        settings = list(DictReader(s))[0]
+        settings = list(DictReader(s))
         return settings
     

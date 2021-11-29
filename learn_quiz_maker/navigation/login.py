@@ -14,7 +14,7 @@ MODULE_PATH = os.path.abspath(os.path.dirname(os.path.abspath(__file__)))
 # Allows user to login automatically (DUO two-factor auth will still need to be done manually)
 def login_user(driver):
     settings = parse_settings(MODULE_PATH, "/settings.csv")
-    username = settings["Username"]
+    username = settings[0]["Username"]
 
     # Initialize webdriver
     driver.maximize_window()
@@ -35,7 +35,7 @@ def login_user(driver):
 # (you can ensure this by pinning the course to the top)
 def navigate_to_course_quizzes(shadow_driver, driver):
     settings = parse_settings(MODULE_PATH, "/settings.csv")
-    csv_course_title = settings["Course"]
+    csv_course_title = settings[0]["Course"]
 
     wait_until_page_fully_loaded(driver, 10)
 
@@ -56,11 +56,10 @@ def navigate_to_course_quizzes(shadow_driver, driver):
             break
 
     wait_until_page_fully_loaded(driver, 10)
+    sleep(1)
 
     # Find all the navigation tab elements that contain groups of links
     course_navlink_groups = shadow_driver.find_elements(".d2l-navigation-s-group-text")
-    for c in course_navlink_groups:
-        print(c.text)
     click_element_of_elements(course_navlink_groups, "Submit")
     
     # Wait for sub links under "Submit" to load
@@ -69,8 +68,6 @@ def navigate_to_course_quizzes(shadow_driver, driver):
     # Find the "Quizzes" sub link and click it 
     quizzes_link = shadow_driver.find_element('d2l-menu-item-link[text=\"Quizzes\"]')
     quizzes_link.click()
-    
-    wait_until_page_fully_loaded(driver, 10)
 
     # We are now at the "Quizzes" page of the course
     print("navigate_to_course_quizzes: Success!")
