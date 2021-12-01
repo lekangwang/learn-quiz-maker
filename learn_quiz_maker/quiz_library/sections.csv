@@ -1,5 +1,2 @@
-SectionName,Shuffle
-Unit 01,No
-Unit 02,Yes
-Unit 03,No
-Unit 04,Yes
+SectionName,Shuffle,SectionText
+Unit 01,Yes,Giddy up

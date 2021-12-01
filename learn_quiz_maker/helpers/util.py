@@ -1,5 +1,8 @@
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from pyshadow.main import Shadow
+from time import sleep
 
 # Helper function to click an certain element given 
 # a collection of elements
@@ -38,3 +41,17 @@ def about(elements, var_name):
             print(f"Element {i + 1} text: {el.text}")
         else:
             print(f"Element {i + 1} text: {el.get_attribute('text')}")
+
+# Specific to create_quiz, filters questions based on section name
+def filter_questions_by_section(section_name, quiz_questions):
+    section_questions = []
+
+    # Loop through all quiz questions and filter by section name
+    for question in quiz_questions:
+        if question["Section"] == section_name:
+            section_questions.append(question)
+
+    return section_questions
+
+
+

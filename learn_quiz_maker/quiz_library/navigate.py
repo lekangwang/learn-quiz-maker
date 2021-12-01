@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from time import sleep
 import os
 from learn_quiz_maker.helpers.parsers import parse_section_names, parse_settings
-from learn_quiz_maker.helpers.util import about, click_element_of_elements, wait_until_page_fully_loaded
+from learn_quiz_maker.helpers.util import about, click_element_of_elements, fill_text_input, wait_until_page_fully_loaded
 
 # Is the path to the settings CSV file, please DO NOT TOUCH
 MODULE_PATH = os.path.abspath(os.path.dirname(os.path.abspath(__file__)))
@@ -69,6 +69,8 @@ def create_sections(driver):
         navigate_to_section_form(driver)
         section_title = section["SectionName"]
         section_shuffle = section["Shuffle"].lower()
+        section_text = section["SectionText"]
+
         # Set section_shuffle to True/False
         if section_shuffle == "no":
             section_shuffle = False
@@ -98,6 +100,11 @@ def create_sections(driver):
         # Enable shuffling if requested in settings.csv
         if section_shuffle:
             section_shuffle_checkbox.click()
+
+        # First click on the input div containing the input iframe
+        div_input_container = driver.find_element(By.CSS_SELECTOR, ".qed-d2l-htmleditor-container[label=\"Section Text \"]")
+        div_input_container.click()
+        div_input_container.send_keys(section_text)
 
         # Click the save button
         section_save_btn.click()

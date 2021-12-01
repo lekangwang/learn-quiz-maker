@@ -19,8 +19,8 @@ def run():
     # login_user(driver)
     # navigate_to_course_quizzes(shadow_driver, driver)
     # navigate_to_quiz_library(shadow_driver, driver)
-    # create_sections(driver)
-    create_quiz(driver)
+    create_sections(driver)
+    # create_quiz(driver)
 
     # # Close the Chrome session after 5 seconds
     # sleep(120)
