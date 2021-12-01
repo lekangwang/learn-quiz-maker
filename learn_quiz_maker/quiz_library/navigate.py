@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from time import sleep
 import os
 from learn_quiz_maker.helpers.parsers import parse_section_names, parse_settings
-from learn_quiz_maker.helpers.util import about, click_element_of_elements, fill_text_input, wait_until_page_fully_loaded
+from learn_quiz_maker.helpers.util import about, click_element_of_elements, wait_until_page_fully_loaded
 
 # Is the path to the settings CSV file, please DO NOT TOUCH
 MODULE_PATH = os.path.abspath(os.path.dirname(os.path.abspath(__file__)))

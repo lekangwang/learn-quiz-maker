@@ -1,5 +1,6 @@
 from pyshadow.main import Shadow
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from time import sleep
 import os
 from learn_quiz_maker.helpers.parsers import parse_section_names, parse_settings
@@ -24,16 +25,51 @@ class Question_maker:
 
     def true_false(self, question_data):
         self.switch_frame()
+
+        print(f"From true_false, received data dict: {question_data}")
+
         # Data extraction
         question_text = question_data["Question Text"]
         true_feedback = question_data["True Feedback"]
         false_feedback = question_data["False Feedback"]
-        correct_answer = question_data["Correct Answer"]
+        correct_answer = question_data["Correct Answer"].lower()
         points = question_data["Points"]
         overall_feedback = question_data["Overall Feedback"]
 
         # Web elements declarations
-        question_text_input = self.shadow_driver.find_element("")
+        question_text_input = self.shadow_driver.find_element(".qed-d2l-htmleditor-container[label=\"Question Text \"]")
+        true_feedback_input = self.shadow_driver.find_element(".qed-d2l-htmleditor-container[label=\"Feedback Answer True feedback\"]")
+        false_feedback_input = self.shadow_driver.find_element(".qed-d2l-htmleditor-container[label=\"Feedback Answer False feedback\"]")
+        overall_feedback_input = self.shadow_driver.find_element(".qed-d2l-htmleditor-container[label=\"Overall Feedback \"]")
+        default_points_input = self.shadow_driver.find_element(".qed-points-val[arialabel=\"Default Points \"]")
+        correct_answer_input = None
+        save_btn = self.shadow_driver.find_element("button[name=\"Submit\"]")
+
+        if correct_answer == "true":
+            correct_answer_input = self.shadow_driver.find_element("input[aria-label=\"Answer True is correct\"]")
+        else:
+            correct_answer_input = self.shadow_driver.find_element("input[aria-label=\"Answer False is correct\"]")
+
+        # Fill in T/F fields
+        question_text_input.click()
+        question_text_input.send_keys(question_text)
+
+        true_feedback_input.click()
+        true_feedback_input.send_keys(true_feedback)
+
+        false_feedback_input.click()
+        false_feedback_input.send_keys(false_feedback)
+
+        correct_answer_input.click()
+
+        overall_feedback_input.click()
+        overall_feedback_input.send_keys(overall_feedback)
+
+        default_points_input.click()
+        self.driver.execute_script("arguments[0].value = ''", default_points_input)
+        default_points_input.send_keys(points)
+
+        save_btn.click()
 
         self.reset_frame()
     
@@ -73,7 +109,7 @@ class Question_maker:
     def new_question(self, question_type, question_data):
         wait_until_page_fully_loaded(self.driver, 10)
         self.reset_frame()
-        
+
         # Find iframe component with main quiz library content and switch webdriver to it
         main_iframe = self.driver.find_element(By.ID, "ctl_2")
         print(f"Main frame: {main_iframe}")
@@ -99,10 +135,15 @@ class Question_maker:
                     btn.click()
                     break
         
+        wait_until_page_fully_loaded(self.driver, 10)
+        sleep(3)
+
+        self.reset_frame()
+
         # Call the appropriate function to fill the question form
         if question_type == "T/F":
             self.true_false(question_data)
-        elif question_type ==  "MC":
+        elif question_type == "MC":
             self.multiple_choice(question_data)
         elif question_type == "M-S":
             self.multi_select(question_data)

@@ -32,16 +32,16 @@ def create_quiz(driver):
 
     # Navigate to each section listed the learn quiz template csv file
     for name in section_names:
-        # Click on one of the 3 sections
+        # Click on one of the 3 sections (in testing phase just unit 1 for now)
         click_element_of_elements(section_link_elements, "Unit 01", "text")
 
         # Filter for all questions that belong to this unit in an array
-        section_questions = filter_questions_by_section(name, quiz_questions)
+        section_questions = filter_questions_by_section("Unit 01", quiz_questions)
 
         for question in section_questions:
-            # print(f"{question}\n")
-            # true_false_maker = Question_maker(driver)
-            # true_false_maker.new_question("T/F")
+            print(f"{question}\n")
+            true_false_maker = Question_maker(driver)
+            true_false_maker.new_question("T/F", question)
             break
 
         # More logic HERE
