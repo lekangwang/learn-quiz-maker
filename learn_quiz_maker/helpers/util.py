@@ -53,5 +53,15 @@ def filter_questions_by_section(section_name, quiz_questions):
 
     return section_questions
 
+# Focus driver on question library homepage iframe
+def focus_on_library_homepage(driver):
+    # Find iframe component with main quiz library content and switch webdriver to it
+    main_iframe = driver.find_element(By.ID, "ctl_2")
+    print(f"Main frame: {main_iframe}")
+    driver.switch_to.frame(main_iframe)
 
+    # Find frame component with main quiz library content and switch webdriver to it
+    library_frames = driver.find_elements(By.TAG_NAME, "frame")
+    print(f"Library frame: {library_frames}")
+    driver.switch_to.frame(library_frames[-1])
 

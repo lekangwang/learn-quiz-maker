@@ -29,3 +29,17 @@ def parse_section_names(quiz_questions):
     
     # Return the unique section names as an array
     return list(section_names)
+
+# For questions.py: used to convert csv options data (Format: (stuff) (more stuff)) 
+# into a list of separated options
+# I refer to a string using round braces "(Text 1) (Text 2)" from the quiz csv
+# file as rounded_str 
+def parse_csv_round_braces(rounded_str):
+    parsed_list = rounded_str.split("-")
+
+    # Iterate and remove the rounded braces from each item
+    for (i, item) in enumerate(parsed_list):
+        parsed_list[i] = item[1:-1]
+
+    print(f"parse_csv_round_braces: {parsed_list}")
+    return parsed_list
