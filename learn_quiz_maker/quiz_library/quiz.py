@@ -50,7 +50,7 @@ def create_quiz(driver):
             # Initalizes a new question maker object and creates a new question
             # as specified in the function call using question["Type"]
             true_false_maker = Question_maker(driver)
-            true_false_maker.new_question("MC", question)
+            true_false_maker.new_question("WR", question)
             break
 
         # More logic HERE
