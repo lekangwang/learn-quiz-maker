@@ -19,15 +19,6 @@ def create_quiz(driver):
     wait_until_page_fully_loaded(driver, 10)
 
     # LOCATION: QUIZ LIBRARY HOMEPAGE, SWITCH DRIVER TO IT
-    # # Find iframe component with main quiz library content and switch webdriver to it
-    # main_iframe = driver.find_element(By.ID, "ctl_2")
-    # print(f"Main frame: {main_iframe}")
-    # driver.switch_to.frame(main_iframe)
-
-    # # Find frame component with main quiz library content and switch webdriver to it
-    # library_frames = driver.find_elements(By.TAG_NAME, "frame")
-    # print(f"Library frame: {library_frames}")
-    # driver.switch_to.frame(library_frames[-1])
     focus_on_library_homepage(driver)
 
     # Create new shadow driver and find all sections visible on the quiz library homepage
@@ -50,7 +41,7 @@ def create_quiz(driver):
             # Initalizes a new question maker object and creates a new question
             # as specified in the function call using question["Type"]
             true_false_maker = Question_maker(driver)
-            true_false_maker.new_question("WR", question)
+            true_false_maker.new_question("MAT", question)
             break
 
         # More logic HERE
