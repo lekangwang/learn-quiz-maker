@@ -399,17 +399,223 @@ class Question_maker:
 
         # Data extraction
         # Text
+        question_title = question_data["Title"]
+        # Numbers
+        points = int(question_data["Points"])
+        # List
+        correct_answers = parse_csv_round_braces(question_data["Correct Answer"])
+        question_text = question_data["Question Text"].split("_")
         
+        # Remove the last text area so there's 1 textarea and 1 blank
+        remove_text_btns = self.shadow_driver.find_elements("a[title^=\"Remove text\"]")
+        self.driver.execute_script("arguments[0].scrollIntoView();", remove_text_btns[1])
+        remove_text_btns[1].click()
+        sleep(2)
+
+        # Add blanks and texts as necessary to match the question text
+        for i in range(1, len(question_text) - 1):
+            add_text_btn = self.shadow_driver.find_element("a[title^=\"Add text\"]")
+            self.driver.execute_script("arguments[0].scrollIntoView();", add_text_btn)
+            add_text_btn.click()
+            sleep(2)
+            add_blank_btn = self.shadow_driver.find_element("a[title^=\"Add blanks\"]")
+            self.driver.execute_script("arguments[0].scrollIntoView();", add_blank_btn)
+            add_blank_btn.click()
+            sleep(2)
+
+        add_text_btn = self.shadow_driver.find_element("a[title^=\"Add text\"]")
+        self.driver.execute_script("arguments[0].scrollIntoView();", add_text_btn)
+        add_text_btn.click()
+        sleep(2)
+
+        # Web component declarations
+        question_title_input = self.shadow_driver.find_element("#z_o")
+        default_points_input = self.shadow_driver.find_element("input[aria-label^=\"Points\"]")
+        text_area_inputs = self.shadow_driver.find_elements(".d2l-htmleditor-container.d2l-skeletize")
+        # question_text_input = self.shadow_driver.find_element(".d2l-htmleditor-wc[label^=\"Question Text\"]")
+        blank_text_inputs = self.shadow_driver.find_elements("input[title^=\"Answer\"]")
+        percent_weight = 100 / question_data["Question Text"].count("_")
+        blank_weight_inputs = self.shadow_driver.find_elements("input[aria-label^=\"Edit weighted percent\"]")
+        save_btns = self.shadow_driver.find_elements(".d2l-button")
+
+        # Fill in FIB form
+        question_title_input.click()
+        question_title_input.send_keys(question_title)
+
+        default_points_input.click()
+        # Clear the default points field
+        self.driver.execute_script("arguments[0].value = ''", default_points_input)
+        default_points_input.send_keys(points)
+        
+        # Fill in the answers
+        for (i, blank) in enumerate(blank_text_inputs):
+            self.driver.execute_script("arguments[0].scrollIntoView();", blank)
+            blank.click()
+            blank.send_keys(correct_answers[i])
+
+        # # Set all blanks to be weighted as 100%
+        for blank in blank_weight_inputs:
+            self.driver.execute_script("arguments[0].scrollIntoView();", blank)
+            blank.click()
+            self.driver.execute_script("arguments[0].value = ''", blank)
+            blank.send_keys(str(percent_weight))
+
+        # PROBLEM: SELENIUM SAYS THIS ELEMENT IS NOT INTERACTABLE
+        # Fill in the text areas
+        for (i, textarea) in enumerate(text_area_inputs):
+            # self.driver.execute_script("arguments[0].scrollIntoView();", textarea)
+            textarea.click()
+            sleep(1)
+            textarea.send_keys(question_text[i])
+
+        click_element_of_elements(save_btns, "Save", "text")
         self.reset_frame()
 
     def ordered(self, question_data):
-        self.switch_frame()
+        focus_on_library_homepage(self.driver)
         print(f"From ordered, received data dict: {question_data}")
+
+        # Data extraction
+        # Text
+        question_title = question_data["Title"]
+        question_text = question_data["Question Text"]
+        grading_method = question_data["Grading Method"].lower()
+        # Numbers
+        points = int(question_data["Points"])
+        num_options = int(question_data["Number of Options"])
+        # Lists
+        options_text = parse_csv_round_braces(question_data["Options Text"])
+        feedback_text = parse_csv_round_braces(question_data["Feedback on Options"])
+
+        # Remove all options except for the last one
+        for i in range(num_options - 1):
+            remove_option_btns = self.shadow_driver.find_elements("a[title^=\"Remove Entry\"]")
+            self.driver.execute_script("arguments[0].scrollIntoView();", remove_option_btns[-1])
+            remove_option_btns[-1].click()
+            sleep(2)
+
+        # Add options until matching num_options
+        for i in range(num_options - 1):
+            add_option_btn = self.shadow_driver.find_element("a[title=\"Add Item\"]")
+            self.driver.execute_script("arguments[0].scrollIntoView();", add_option_btn)
+            add_option_btn.click()
+            sleep(2)
+
+        # Web element declarations
+        question_title_input = self.shadow_driver.find_element("#z_o")
+        default_points_input = self.shadow_driver.find_element("input[aria-label=\"Points\"]")
+        question_text_input = self.shadow_driver.find_element(".d2l-htmleditor-wc[label=\"Question Text\"]")
+        grading_method_choices = self.shadow_driver.find_elements(".d2l-radio-inline")
+        option_text_inputs = self.shadow_driver.find_elements(".d2l-htmleditor-wc[label$=\"Value\"]")
+        feedback_text_inputs = self.shadow_driver.find_elements(".d2l-htmleditor-wc[label$=\"Feedback\"]")
+        save_btns = self.shadow_driver.find_elements(".d2l-button")
+
+        # Fill in ORD form
+        question_title_input.click()
+        question_title_input.send_keys(question_title)
+
+        default_points_input.click()
+        # Clear the default points field
+        self.driver.execute_script("arguments[0].value = ''", default_points_input)
+        default_points_input.send_keys(points)
+
+        question_text_input.click()
+        question_text_input.send_keys(question_text)
+
+        if grading_method == "equally weighted":
+            grading_method_choices[0].click()
+        elif grading_method == "right minus wrong":
+            grading_method_choices[2].click()
+        else:
+            grading_method_choices[1].click()
+        
+        for (i, option) in enumerate(option_text_inputs):
+            self.driver.execute_script("arguments[0].scrollIntoView();", option)
+            option.click()
+            option.send_keys(options_text[i])
+        
+        print(f"Length of feedback_text_inputs: {len(feedback_text_inputs)}")
+        feedback_text_inputs = feedback_text_inputs[0:-1]
+        for (i, feedback) in enumerate(feedback_text_inputs):
+            self.driver.execute_script("arguments[0].scrollIntoView();", feedback)
+            feedback.click()
+            feedback.send_keys(feedback_text[i])
+
+        click_element_of_elements(save_btns, "Save", "text")
         self.reset_frame()
 
     def likert(self, question_data):
-        self.switch_frame()
+        focus_on_library_homepage(self.driver)
         print(f"From likert, received data dict: {question_data}")
+
+        # Data extraction 
+        # Text
+        question_text = question_data["Question Text"]
+        question_title = question_data["Title"]
+        scale_type = question_data["Scale Type"].lower()
+        # Numbers
+        num_options = int(question_data["Number of Options"])
+        # Boolean
+        enable_na = lambda choice : bool(choice == "yes")
+        enable_na = enable_na(question_data["Enable N/A Option"].lower())
+        # Lists
+        options_text = parse_csv_round_braces(question_data["Options Text"])
+
+        # Remove the last option so that only one remains
+        remove_option_btns = self.shadow_driver.find_elements("a[title^=\"Remove Entry\"]")
+        self.driver.execute_script("arguments[0].scrollIntoView();", remove_option_btns[-1])
+        remove_option_btns[-1].click()
+        sleep(2)
+
+        # Add options until matching num_options
+        for i in range(num_options - 1):
+            add_option_btn = self.shadow_driver.find_element("a[title=\"Add Option\"]")
+            self.driver.execute_script("arguments[0].scrollIntoView();", add_option_btn)
+            add_option_btn.click()
+            sleep(2)
+
+        # Web element declarations
+        questions_title_input = self.shadow_driver.find_element("#z_o")
+        questions_text_input = self.shadow_driver.find_element(".d2l-htmleditor-wc[label=\"Introductory Text\"]")
+        scale_choices = self.shadow_driver.find_elements(".d2l-radio-inline")
+        enable_na_checkbox = self.shadow_driver.find_element("#z_bl")
+        option_text_inputs = self.shadow_driver.find_elements(".d2l-htmleditor-wc[label$=\"Value\"]")
+        save_btns = self.shadow_driver.find_elements(".d2l-button")
+
+        # Fill in LIK form
+        questions_title_input.click()
+        questions_title_input.send_keys(question_title)
+
+        questions_text_input.click()
+        questions_text_input.send_keys(question_text)
+
+        if scale_type == "one to five":
+            scale_choices[0].click()
+        elif scale_type == "one to eight":
+            scale_choices[1].click()
+        elif scale_type == "one to ten":
+            scale_choices[2].click()
+        elif scale_type == "agreement":
+            scale_choices[3].click()
+        elif scale_type == "satisfaction":
+            scale_choices[4].click()
+        elif scale_type == "frequency":
+            scale_choices[5].click()
+        elif scale_type == "importance":
+            scale_choices[6].click()
+        elif scale_type == "opposition":
+            scale_choices[7].click()
+
+        if enable_na == True:
+            self.driver.execute_script("arguments[0].scrollIntoView();", enable_na_checkbox)
+            enable_na_checkbox.click()
+
+        for (i, option) in enumerate(option_text_inputs):
+            self.driver.execute_script("arguments[0].scrollIntoView();", option)    
+            option.click()
+            option.send_keys(options_text[i])
+            
+        click_element_of_elements(save_btns, "Save", "text")
         self.reset_frame()
     
     def navigate_to_question_form(self, question_type):
