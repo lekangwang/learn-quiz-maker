@@ -3,8 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from time import sleep
-import os
-from learn_quiz_maker.helpers.parsers import parse_csv_round_braces, parse_section_names, parse_settings
+from learn_quiz_maker.helpers.parsers import parse_csv_round_braces
 from learn_quiz_maker.helpers.util import about, click_element_of_elements, focus_on_library_homepage, wait_until_page_fully_loaded
 
 class Question_maker: 
@@ -28,7 +27,7 @@ class Question_maker:
 
     def true_false(self, question_data):
         self.switch_frame()
-
+        self.show_feedback_fields()
         print(f"From true_false, received data dict: {question_data}")
 
         # Data extraction
@@ -37,7 +36,7 @@ class Question_maker:
         true_feedback = question_data["True Feedback"]
         false_feedback = question_data["False Feedback"]
         correct_answer = question_data["Correct Answer"].lower()
-        points = question_data["Points"]
+        points = int(question_data["Points"])
         overall_feedback = question_data["Overall Feedback"]
 
         # Web elements declarations
@@ -49,12 +48,13 @@ class Question_maker:
         correct_answer_input = None
         save_btn = self.shadow_driver.find_element("button[name=\"Submit\"]")
 
+        # Select correct answer checkbox
         if correct_answer == "true":
             correct_answer_input = self.shadow_driver.find_element("input[aria-label=\"Answer True is correct\"]")
         else:
             correct_answer_input = self.shadow_driver.find_element("input[aria-label=\"Answer False is correct\"]")
 
-        # Fill in T/F fields
+        # Fill in T/F form
         question_text_input.click()
         question_text_input.send_keys(question_text)
 
@@ -66,11 +66,11 @@ class Question_maker:
 
         correct_answer_input.click()
 
-        self.driver.execute_script("arguments[0].scrollIntoView();", overall_feedback_input) 
+        self.shadow_driver.scroll_to(overall_feedback_input)
         overall_feedback_input.click()
         overall_feedback_input.send_keys(overall_feedback)
 
-        self.driver.execute_script("arguments[0].scrollIntoView();", save_btn)
+        self.shadow_driver.scroll_to(save_btn)
         default_points_input.click()
         # Clear the default points field
         self.driver.execute_script("arguments[0].value = ''", default_points_input)
@@ -81,7 +81,7 @@ class Question_maker:
     
     def multiple_choice(self, question_data):
         self.switch_frame()
-
+        self.show_feedback_fields()
         print(f"From multiple_choice, received data dict: {question_data}")
 
         # Data extraction
@@ -109,6 +109,7 @@ class Question_maker:
 
         # Add enough options to match num_options (specified by csv file)
         add_answer_btn = self.shadow_driver.find_element(".d2l-button-subtle-content")
+        self.shadow_driver.scroll_to(add_answer_btn)
         for i in range(num_options - 1):
             add_answer_btn.click()
             sleep(1)
@@ -128,7 +129,7 @@ class Question_maker:
         question_text_input.send_keys(question_text)
 
         for i in range(len(option_text)):
-            self.driver.execute_script("arguments[0].scrollIntoView();", option_text_inputs[i]) 
+            self.shadow_driver.scroll_to(option_text_inputs[i])
             option_text_inputs[i].click()
             option_text_inputs[i].send_keys(option_text[i])
             feedback_text_inputs[i].click()
@@ -140,11 +141,10 @@ class Question_maker:
         if randomize == True:
             randomize_checkbox.click()
         
-        self.driver.execute_script("arguments[0].scrollIntoView();", overall_feedback_input) 
         overall_feedback_input.click()
         overall_feedback_input.send_keys(overall_feedback)
         
-        self.driver.execute_script("arguments[0].scrollIntoView();", save_btn) 
+        self.shadow_driver.scroll_to(save_btn)
         default_points_input.click()
         # Clear the default points field
         self.driver.execute_script("arguments[0].value = ''", default_points_input)
@@ -155,13 +155,14 @@ class Question_maker:
     
     def multi_select(self, question_data):
         self.switch_frame()
-
+        self.show_feedback_fields()
         print(f"From multi-select, received data dict: {question_data}")
 
         # Data extraction
         # Text
         question_text = question_data["Question Text"]
         grading_method = question_data["Grading Method"].lower()
+        overall_feedback = question_data["Overall Feedback"]
         # Numbers
         num_options = int(question_data["Number of Options"])
         points = int(question_data["Points"])
@@ -170,6 +171,7 @@ class Question_maker:
         randomize = randomize(question_data["Randomize"].lower())
         # List
         options_text = parse_csv_round_braces(question_data["Options Text"])
+        feedback_text = parse_csv_round_braces(question_data["Feedback on Options"])
         correct_answers = parse_csv_round_braces(question_data["Correct Answer"])
         correct_answers = [int(val) for val in correct_answers]
 
@@ -183,6 +185,7 @@ class Question_maker:
 
         # Add option inputs according to num_options
         add_answer_btn = self.shadow_driver.find_element(".d2l-button-subtle-content")
+        self.shadow_driver.scroll_to(add_answer_btn)
         for i in range(num_options - 1):
             add_answer_btn.click()
             sleep(1)
@@ -190,8 +193,10 @@ class Question_maker:
         # Web element declarations
         question_text_input = self.shadow_driver.find_element(".qed-d2l-htmleditor-container[label^=\"Question Text\"]")
         option_text_inputs = self.shadow_driver.find_elements(".qed-d2l-htmleditor-container[label^=\"Answer\"]")
+        feedback_text_inputs = self.shadow_driver.find_elements(".qed-d2l-htmleditor-container[label^=\"Feedback\"]")
         answer_checkboxes = self.shadow_driver.find_elements("input[aria-label^=\"Answer\"]")
         randomize_checkbox = self.shadow_driver.find_element("#qed-randomize-answers")
+        overall_feedback_input = self.shadow_driver.find_element(".qed-d2l-htmleditor-container[label^=\"Overall Feedback\"]")
         default_points_input = self.shadow_driver.find_element("#qed-points")
         grading_method_container = Select(self.shadow_driver.find_element("#qed-grading-type-selector"))
         save_btn = self.shadow_driver.find_element(".primary[name=\"Submit\"]")
@@ -201,18 +206,20 @@ class Question_maker:
         question_text_input.send_keys(question_text)
 
         for i in range(len(options_text)):
-            self.driver.execute_script("arguments[0].scrollIntoView();", option_text_inputs[i]) 
+            self.shadow_driver.scroll_to(option_text_inputs[i])
             option_text_inputs[i].click()
             option_text_inputs[i].send_keys(options_text[i])
+            feedback_text_inputs[i].click()
+            feedback_text_inputs[i].send_keys(feedback_text[i])
            
         for answer in correct_answers:
             answer_checkboxes[answer - 1].click()
         
-        self.driver.execute_script("arguments[0].scrollIntoView();", randomize_checkbox)    
+        self.shadow_driver.scroll_to(save_btn)   
         if randomize == True:
             randomize_checkbox.click()
-        
-        self.driver.execute_script("arguments[0].scrollIntoView();", save_btn)    
+        overall_feedback_input.click()
+        overall_feedback_input.send_keys(overall_feedback)
         if grading_method == "right answers":
             grading_method_container.select_by_index(1)
         elif grading_method == "right answers limited selection":
@@ -232,18 +239,20 @@ class Question_maker:
     
     def written_answer(self, question_data):
         self.switch_frame()
-
+        self.show_feedback_fields()
         print(f"From written_answer, received data dict: {question_data}")
 
         # Data extraction
         # Text
         question_text = question_data["Question Text"]
+        overall_feedback = question_data["Overall Feedback"]
         # Numbers
         points = int(question_data["Points"])
 
         # Web components declarations
         # Web element declarations
         question_text_input = self.shadow_driver.find_element(".qed-d2l-htmleditor-container[label^=\"Question Text\"]")
+        overall_feedback_input = self.shadow_driver.find_element(".qed-d2l-htmleditor-container[label^=\"Overall Feedback\"]")
         default_points_input = self.shadow_driver.find_element("#qed-points")
         save_btn = self.shadow_driver.find_element(".primary[name=\"Submit\"]")
 
@@ -251,7 +260,10 @@ class Question_maker:
         question_text_input.click()
         question_text_input.send_keys(question_text)
 
-        self.driver.execute_script("arguments[0].scrollIntoView();", save_btn)
+        self.shadow_driver.scroll_to(save_btn)
+        overall_feedback_input.click()
+        overall_feedback_input.send_keys(overall_feedback)
+
         default_points_input.click()
         # Clear the default points field
         self.driver.execute_script("arguments[0].value = ''", default_points_input)
@@ -262,7 +274,7 @@ class Question_maker:
     
     def short_answer(self, question_data):
         self.switch_frame()
-
+        self.show_feedback_fields()
         print(f"From short_answer, received data dict: {question_data}")
 
         # Data extraction
@@ -271,7 +283,9 @@ class Question_maker:
         points = int(question_data["Points"])
         # Text
         question_text = question_data["Question Text"]
+        overall_feedback = question_data["Overall Feedback"]
         grading_method = None
+        # Grading method field will only show for 2+ blank fields
         if num_text_fields >= 2:
             grading_method = question_data["Grading Method"].lower()
         # List  
@@ -279,6 +293,7 @@ class Question_maker:
 
         # Add enough blanks to match num_text_fields
         add_blank_btn = self.shadow_driver.find_element("#add-blank")
+        self.shadow_driver.scroll_to(add_blank_btn)
         for i in range(num_text_fields - 1):
             add_blank_btn.click()
             sleep(1)
@@ -286,38 +301,43 @@ class Question_maker:
         # Web elements declarations
         question_text_input = self.shadow_driver.find_element(".qed-d2l-htmleditor-container[label^=\"Question Text\"]")
         answer_inputs = self.shadow_driver.find_elements(".qed-tagfield-input")
+        overall_feedback_input = self.shadow_driver.find_element(".qed-d2l-htmleditor-container[label^=\"Overall Feedback\"]")
         default_points_input = self.shadow_driver.find_element("#qed-points")
-        grading_method_container = Select(self.shadow_driver.find_element("#qed-grading-type-selector"))
+        if grading_method != None:
+            grading_method_container = Select(self.shadow_driver.find_element("#qed-grading-type-selector"))
         save_btn = self.shadow_driver.find_element(".primary[name=\"Submit\"]")
 
         # Fill in WR form
         question_text_input.click()
         question_text_input.send_keys(question_text)
 
+        # Fill each blank with the corresponding answer
         for i in range(num_text_fields):
             self.driver.execute_script("arguments[0].scrollIntoView();", answer_inputs[i])    
             answer_inputs[i].click()
             answer_inputs[i].send_keys(correct_answers[i])
 
-        self.driver.execute_script("arguments[0].scrollIntoView();", default_points_input)    
+        self.shadow_driver.scroll_to(save_btn)
+        overall_feedback_input.click()
+        overall_feedback_input.send_keys(overall_feedback)
+
         default_points_input.click()
         # Clear the default points field
         self.driver.execute_script("arguments[0].value = ''", default_points_input)
         default_points_input.send_keys(points)
-
-        self.driver.execute_script("arguments[0].scrollIntoView();", save_btn)    
-        if grading_method == "all or nothing":
-            grading_method_container.select_by_index(1)
-        else:
-            grading_method_container.select_by_index(0)
+  
+        # Only select a grading method for 2+ blank fields
+        if grading_method != None:
+            if grading_method == "all or nothing":
+                grading_method_container.select_by_index(1)
+            else:
+                grading_method_container.select_by_index(0)
 
         save_btn.click()
         self.reset_frame()
     
     def matching(self, question_data):
-        # self.switch_frame()
         focus_on_library_homepage(self.driver)
-
         print(f"From matching, received data dict: {question_data}")
 
         # Data extraction
@@ -661,6 +681,23 @@ class Question_maker:
         wait_until_page_fully_loaded(self.driver, 10)
         sleep(3)
         self.reset_frame()
+    
+    # Shows all feedback fields in a question form
+    def show_feedback_fields(self):
+        # Click the Options button drop down
+        options_btn = self.shadow_driver.find_element("#qed-options-dropdown-button")
+        options_btn.click()
+        sleep(1)
+
+        # Check if feedback is already shown or not
+        add_feedback_btn = self.shadow_driver.find_element("d2l-menu-item-checkbox[value=\"feedback\"]")
+
+        if add_feedback_btn.get_attribute('text') == "Add Feedback":
+            add_feedback_btn.click()
+            sleep(1)
+        
+        options_btn.click()
+        sleep(1)
 
     # Creates a single quiz question from start to finish
     def new_question(self, question_type, question_data):

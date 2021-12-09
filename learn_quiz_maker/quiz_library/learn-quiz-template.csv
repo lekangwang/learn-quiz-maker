@@ -1,10 +1,1 @@
 Section,Type,Question Text,True Feedback,False Feedback,Number of Options,Number of Text Fields,Number of Pairs,Randomize,Options Text,Feedback on Options,Grading Method,Correct Answer,Points,Overall Feedback,Title,Scale Type,Enable N/A Option
-Unit 01,T/F,Are dolphins mammals?,Correct! Dolphins are mammals,"No, although they swim, dolphins are mammals as they drink milk when they are young",,,,,,,,TRUE,2,Some overall feedback if necessary (optional),,,
-Unit 01,MC,How many fingers on a human hand?,,,3,,,No,(3 fingers)-(5 fingers)-(14 fingers),()-(Right!)-(),,2,2,,,,
-Unit 02,M-S,Which of the following are programming technologies? (The rest are Pokemon names),,,4,,,Yes,(Ditto)-(Lodash)-(Hadoop)-(Redux),,right answers,(2)-(3)-(4),3,,,,
-Unit 02,WR,Write about what you like to order at restaurants and why?,,,,,,,,,,,4,,,,
-Unit 03,SA,Give the names of the two main ingredients in grilled cheese.,,,,2,,,,,all or nothing,(Bread)-(Cheese),2,,,,
-Unit 03,MAT,Match the following slogans to its brand. ,,,,,4,,(I'm lovin' it)-(Just do it)-(Eat fresh)-(Think different),,All or nothing,(McDonalds)-(Nike)-(Subway)-(Apple),4,,New matching question (Title is optional),,
-Unit 01,FIB,Ring around the _ a pocket full of _ a tissue a tissue we all fall down!,,,,,,,,,,(rosie)-(posies),2,,New fill in the blank question (Title is optional),,
-Unit 02,ORD,Order the following events starting from most distant to most recent,,,4,,,,(WW1)-(WW2)-(Y2K)-(Covid 19),(Ended in 1918)-(Ended in 1945)-(Ended in 2000)-(Started in 2019),right minus wrong,,4,,New ordering question (Title is optional),,
-Unit 03,LIK,Rate the following: ,,,4,,,,(Waking up early)-(Pulling an all nighter)-(Exercising daily)-(Making your bed),,,,,,New likert question (Title is optional),Satisfaction,yes

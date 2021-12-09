@@ -33,8 +33,8 @@ def create_quiz(driver):
         click_element_of_elements(section_link_elements, name, "text")
 
         # Filter for all questions that belong to this unit into an array
-        # section_questions = filter_questions_by_section("Unit 01", quiz_questions)
-        section_questions = filter_questions_by_section(name, quiz_questions)
+        section_questions = filter_questions_by_section("Unit 01", quiz_questions)
+        # section_questions = filter_questions_by_section(name, quiz_questions)
 
         for question in section_questions:
             print(f"Current question in inner loop: {question}\n")
@@ -43,11 +43,12 @@ def create_quiz(driver):
             # as specified in the function call using question["Type"]
             maker = Question_maker(driver)
             maker.new_question(question["Type"], question)
-            sleep(1)
-            break
+            # maker.new_question("T/F", question)
+            sleep(3)
+            # break
             # maker.new_question("FIB", question)
 
-        break
+        # break
         # Go back to the main homepage 
         focus_on_library_homepage(driver)
         question_library_link = shadow_driver.find_element("a.d2l-link.d2l-link-small")
