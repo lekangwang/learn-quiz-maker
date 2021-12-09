@@ -66,14 +66,16 @@ class Question_maker:
 
         correct_answer_input.click()
 
+        self.driver.execute_script("arguments[0].scrollIntoView();", overall_feedback_input) 
         overall_feedback_input.click()
         overall_feedback_input.send_keys(overall_feedback)
 
+        self.driver.execute_script("arguments[0].scrollIntoView();", save_btn)
         default_points_input.click()
         # Clear the default points field
         self.driver.execute_script("arguments[0].value = ''", default_points_input)
         default_points_input.send_keys(points)
-
+     
         save_btn.click()
         self.reset_frame()
     
@@ -126,6 +128,7 @@ class Question_maker:
         question_text_input.send_keys(question_text)
 
         for i in range(len(option_text)):
+            self.driver.execute_script("arguments[0].scrollIntoView();", option_text_inputs[i]) 
             option_text_inputs[i].click()
             option_text_inputs[i].send_keys(option_text[i])
             feedback_text_inputs[i].click()
@@ -133,12 +136,15 @@ class Question_maker:
 
         answer_checkboxes[correct_answer - 1].click()
 
+        self.driver.execute_script("arguments[0].scrollIntoView();", randomize_checkbox) 
         if randomize == True:
             randomize_checkbox.click()
         
+        self.driver.execute_script("arguments[0].scrollIntoView();", overall_feedback_input) 
         overall_feedback_input.click()
         overall_feedback_input.send_keys(overall_feedback)
-
+        
+        self.driver.execute_script("arguments[0].scrollIntoView();", save_btn) 
         default_points_input.click()
         # Clear the default points field
         self.driver.execute_script("arguments[0].value = ''", default_points_input)
@@ -195,15 +201,18 @@ class Question_maker:
         question_text_input.send_keys(question_text)
 
         for i in range(len(options_text)):
+            self.driver.execute_script("arguments[0].scrollIntoView();", option_text_inputs[i]) 
             option_text_inputs[i].click()
             option_text_inputs[i].send_keys(options_text[i])
-
+           
         for answer in correct_answers:
             answer_checkboxes[answer - 1].click()
         
+        self.driver.execute_script("arguments[0].scrollIntoView();", randomize_checkbox)    
         if randomize == True:
             randomize_checkbox.click()
-
+        
+        self.driver.execute_script("arguments[0].scrollIntoView();", save_btn)    
         if grading_method == "right answers":
             grading_method_container.select_by_index(1)
         elif grading_method == "right answers limited selection":
@@ -212,7 +221,7 @@ class Question_maker:
             grading_method_container.select_by_index(3)
         else:
             grading_method_container.select_by_index(0)
-
+    
         default_points_input.click()
         # Clear the default points field
         self.driver.execute_script("arguments[0].value = ''", default_points_input)
@@ -242,6 +251,7 @@ class Question_maker:
         question_text_input.click()
         question_text_input.send_keys(question_text)
 
+        self.driver.execute_script("arguments[0].scrollIntoView();", save_btn)
         default_points_input.click()
         # Clear the default points field
         self.driver.execute_script("arguments[0].value = ''", default_points_input)
@@ -285,14 +295,17 @@ class Question_maker:
         question_text_input.send_keys(question_text)
 
         for i in range(num_text_fields):
+            self.driver.execute_script("arguments[0].scrollIntoView();", answer_inputs[i])    
             answer_inputs[i].click()
             answer_inputs[i].send_keys(correct_answers[i])
 
+        self.driver.execute_script("arguments[0].scrollIntoView();", default_points_input)    
         default_points_input.click()
         # Clear the default points field
         self.driver.execute_script("arguments[0].value = ''", default_points_input)
         default_points_input.send_keys(points)
 
+        self.driver.execute_script("arguments[0].scrollIntoView();", save_btn)    
         if grading_method == "all or nothing":
             grading_method_container.select_by_index(1)
         else:
@@ -356,10 +369,6 @@ class Question_maker:
         print(f"Option inputs: {len(option_text_inputs)}")
         print(f"Matches inputs: {len(match_text_inputs)}")
 
-        # correct_match_select_dropdowns = self.shadow_driver.find_elements("")
-        # for (i, select) in enumerate(correct_match_select_dropdowns):
-        #     correct_match_select_dropdowns[i] = Select(select)
-
         save_btns = self.shadow_driver.find_elements("button.d2l-button")
 
         # Fill in MAT form
@@ -374,6 +383,7 @@ class Question_maker:
         question_text_input.click()
         question_text_input.send_keys(question_text)
 
+        self.driver.execute_script("arguments[0].scrollIntoView();", grading_method_choices[0])    
         if grading_method == "all or nothing":
             grading_method_choices[1].click()
         elif grading_method == "right minus wrong":
@@ -382,10 +392,12 @@ class Question_maker:
             grading_method_choices[0].click()
         
         for i in range(num_pairs):
+            self.driver.execute_script("arguments[0].scrollIntoView();", option_text_inputs[i])    
             option_text_inputs[i].click()
             option_text_inputs[i].send_keys(options_text[i])
         
         for i in range(num_pairs):
+            self.driver.execute_script("arguments[0].scrollIntoView();", match_text_inputs[i])    
             match_text_inputs[i].click()
             match_text_inputs[i].send_keys(matching_text[i])
 
@@ -431,7 +443,7 @@ class Question_maker:
         # Web component declarations
         question_title_input = self.shadow_driver.find_element("#z_o")
         default_points_input = self.shadow_driver.find_element("input[aria-label^=\"Points\"]")
-        text_area_inputs = self.shadow_driver.find_elements(".d2l-htmleditor-container.d2l-skeletize")
+        text_area_inputs = self.shadow_driver.find_elements(".d2l-htmleditor-wc[label^=\"<strong>Text\"]")
         # question_text_input = self.shadow_driver.find_element(".d2l-htmleditor-wc[label^=\"Question Text\"]")
         blank_text_inputs = self.shadow_driver.find_elements("input[title^=\"Answer\"]")
         percent_weight = 100 / question_data["Question Text"].count("_")
@@ -442,6 +454,7 @@ class Question_maker:
         question_title_input.click()
         question_title_input.send_keys(question_title)
 
+        self.driver.execute_script("arguments[0].scrollIntoView();", default_points_input)    
         default_points_input.click()
         # Clear the default points field
         self.driver.execute_script("arguments[0].value = ''", default_points_input)
@@ -453,20 +466,21 @@ class Question_maker:
             blank.click()
             blank.send_keys(correct_answers[i])
 
-        # # Set all blanks to be weighted as 100%
+        # Set all blanks to be weighted as 100%
         for blank in blank_weight_inputs:
             self.driver.execute_script("arguments[0].scrollIntoView();", blank)
             blank.click()
             self.driver.execute_script("arguments[0].value = ''", blank)
             blank.send_keys(str(percent_weight))
 
-        # PROBLEM: SELENIUM SAYS THIS ELEMENT IS NOT INTERACTABLE
-        # Fill in the text areas
-        for (i, textarea) in enumerate(text_area_inputs):
-            # self.driver.execute_script("arguments[0].scrollIntoView();", textarea)
-            textarea.click()
-            sleep(1)
-            textarea.send_keys(question_text[i])
+        # # PROBLEM: SELENIUM SAYS THIS ELEMENT IS NOT INTERACTABLE
+        # # Fill in the text areas
+        # for (i, textarea) in enumerate(text_area_inputs):
+        #     self.driver.execute_script("arguments[0].scrollIntoView();", textarea)
+        #     sleep(5)
+        #     textarea.click()
+        #     sleep(2)
+        #     textarea.send_keys(question_text[i])
 
         click_element_of_elements(save_btns, "Save", "text")
         self.reset_frame()
@@ -491,6 +505,7 @@ class Question_maker:
         for i in range(num_options - 1):
             remove_option_btns = self.shadow_driver.find_elements("a[title^=\"Remove Entry\"]")
             self.driver.execute_script("arguments[0].scrollIntoView();", remove_option_btns[-1])
+            
             remove_option_btns[-1].click()
             sleep(2)
 
@@ -514,6 +529,7 @@ class Question_maker:
         question_title_input.click()
         question_title_input.send_keys(question_title)
 
+        self.driver.execute_script("arguments[0].scrollIntoView();", default_points_input)    
         default_points_input.click()
         # Clear the default points field
         self.driver.execute_script("arguments[0].value = ''", default_points_input)
@@ -522,6 +538,7 @@ class Question_maker:
         question_text_input.click()
         question_text_input.send_keys(question_text)
 
+        self.driver.execute_script("arguments[0].scrollIntoView();", grading_method_choices[0])    
         if grading_method == "equally weighted":
             grading_method_choices[0].click()
         elif grading_method == "right minus wrong":
@@ -589,6 +606,7 @@ class Question_maker:
         questions_text_input.click()
         questions_text_input.send_keys(question_text)
 
+        self.driver.execute_script("arguments[0].scrollIntoView();", scale_choices[0])    
         if scale_type == "one to five":
             scale_choices[0].click()
         elif scale_type == "one to eight":
@@ -635,7 +653,8 @@ class Question_maker:
         new_question_btns = self.shadow_driver.find_elements(".d2l-menu-item-text")
         for btn in new_question_btns:
             if btn.text != "":
-                if btn.text.split(" ")[-1] == "(" + question_type + ")":
+                if btn.text.split(" ")[-1] == "(" + question_type + ")" and btn.text.split(" ")[-1] != "(" + "FIB" + ")":
+                    # self.driver.execute_script('arguments[0].scrollTop = arguments[0].scrollHeight', self.shadow_driver.get_parent_element(btn))
                     btn.click()
                     break
         
@@ -660,8 +679,8 @@ class Question_maker:
             self.short_answer(question_data)
         elif question_type == "MAT":
             self.matching(question_data)
-        elif question_type == "FIB":
-            self.fill_in_the_blanks(question_data)
+        # elif question_type == "FIB":
+        #     self.fill_in_the_blanks(question_data)
         elif question_type == "ORD":
             self.ordered(question_data)
         elif question_type == "LIK":

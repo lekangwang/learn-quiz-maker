@@ -21,33 +21,39 @@ def create_quiz(driver):
     # LOCATION: QUIZ LIBRARY HOMEPAGE, SWITCH DRIVER TO IT
     focus_on_library_homepage(driver)
 
-    # Create new shadow driver and find all sections visible on the quiz library homepage
-    shadow_driver = Shadow(driver)
-    section_link_elements = shadow_driver.find_elements(".d2l-link")
-
     # Navigate to each section listed the learn quiz template csv file
     for name in section_names:
+        # Create new shadow driver and find all sections visible on the quiz library homepage
+        shadow_driver = Shadow(driver)
+        section_link_elements = shadow_driver.find_elements(".d2l-link")
         # Click on the section element on the quiz library homepage
         # that matches the name of the section found in the quiz csv file
-        # for the current loop iteration (in testing phase, so only "Unit 01" for now)
-        click_element_of_elements(section_link_elements, "Unit 01", "text")
+        # for the current loop iteration
+        # click_element_of_elements(section_link_elements, "Unit 01", "text")
+        click_element_of_elements(section_link_elements, name, "text")
 
         # Filter for all questions that belong to this unit into an array
-        section_questions = filter_questions_by_section("Unit 01", quiz_questions)
+        # section_questions = filter_questions_by_section("Unit 01", quiz_questions)
+        section_questions = filter_questions_by_section(name, quiz_questions)
 
         for question in section_questions:
-            print(f"{question}\n")
+            print(f"Current question in inner loop: {question}\n")
 
             # Initalizes a new question maker object and creates a new question
             # as specified in the function call using question["Type"]
-            true_false_maker = Question_maker(driver)
-            true_false_maker.new_question("LIK", question)
+            maker = Question_maker(driver)
+            maker.new_question(question["Type"], question)
+            sleep(1)
             break
+            # maker.new_question("FIB", question)
 
-        # More logic HERE
         break
-
+        # Go back to the main homepage 
         focus_on_library_homepage(driver)
+        question_library_link = shadow_driver.find_element("a.d2l-link.d2l-link-small")
+        question_library_link.click()
+        wait_until_page_fully_loaded(driver, 10)
+        sleep(1)
 
     # Focus driver back to whole DOM
     driver.switch_to.default_content()

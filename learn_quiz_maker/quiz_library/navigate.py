@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from time import sleep
 import os
 from learn_quiz_maker.helpers.parsers import parse_section_names, parse_settings
-from learn_quiz_maker.helpers.util import about, click_element_of_elements, wait_until_page_fully_loaded
+from learn_quiz_maker.helpers.util import about, click_element_of_elements, focus_on_library_homepage, wait_until_page_fully_loaded
 
 # Is the path to the settings CSV file, please DO NOT TOUCH
 MODULE_PATH = os.path.abspath(os.path.dirname(os.path.abspath(__file__)))
@@ -115,3 +115,50 @@ def create_sections(driver):
         # Focus driver back to whole DOM
         driver.switch_to.default_content()
         print("create_section: Quiz section created!")
+
+# Automatically place the newly created sections at the top 
+def shift_sections_to_top(driver):
+    settings = parse_settings(MODULE_PATH, "/sections.csv")
+    
+    focus_on_library_homepage(driver)
+
+    shadow_driver = Shadow(driver)
+    # Click on "Order" in library main menu
+    order_btn = shadow_driver.find_element("d2l-button-subtle[text=\"Order\"]")
+    order_btn.click()
+    wait_until_page_fully_loaded(driver, 10)
+    sleep(2)
+
+    num_sections = len(settings)   
+    # print(f"num_sections: {num_sections}")
+
+    # Newly created sections are always going 
+    # to be at the bottom of the section list
+    sections_checkboxes = shadow_driver.find_elements("input[type=\"checkbox\"]")
+    # print(f"sections: {len(sections_checkboxes)}")
+    shift_up_btn = shadow_driver.find_element("button[title=\"Move Up\"]")
+    save_btn = shadow_driver.find_element("#z_a")
+    num_shift = len(sections_checkboxes) - num_sections
+
+    # print(f"num_shift: {num_shift}")
+
+    # Click on all newly created sections
+    for i in range(len(sections_checkboxes) - 1, len(sections_checkboxes) - num_sections - 1, -1):
+        sections_checkboxes[i].click()
+    
+    # Shift up the new sections to the top
+    for i in range(num_shift):
+        shift_up_btn.click()
+
+    driver.execute_script("arguments[0].scrollIntoView();", save_btn)
+    save_btn.click()
+
+    wait_until_page_fully_loaded(driver, 10)
+    
+    # Focus driver back to whole DOM
+    driver.switch_to.default_content()
+    print("shift_sections_to_top: New Sections Shifted!")
+
+
+
+    
