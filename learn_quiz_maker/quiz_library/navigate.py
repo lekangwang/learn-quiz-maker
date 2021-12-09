@@ -102,7 +102,8 @@ def create_sections(driver):
             section_shuffle_checkbox.click()
 
         # First click on the input div containing the input iframe
-        div_input_container = driver.find_element(By.CSS_SELECTOR, ".qed-d2l-htmleditor-container[label=\"Section Text \"]")
+        # div_input_container = driver.find_element(By.CSS_SELECTOR, ".qed-d2l-htmleditor-container[label=\"Section Text \"]")
+        div_input_container = shadow_driver.find_element(".qed-d2l-htmleditor-container[label^=\"Section Text\"]")
         div_input_container.click()
         div_input_container.send_keys(section_text)
 

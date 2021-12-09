@@ -33,8 +33,8 @@ def create_quiz(driver):
         click_element_of_elements(section_link_elements, name, "text")
 
         # Filter for all questions that belong to this unit into an array
-        section_questions = filter_questions_by_section("Unit 01", quiz_questions)
-        # section_questions = filter_questions_by_section(name, quiz_questions)
+        # section_questions = filter_questions_by_section("Unit 01", quiz_questions)
+        section_questions = filter_questions_by_section(name, quiz_questions)
 
         for question in section_questions:
             print(f"Current question in inner loop: {question}\n")
@@ -42,7 +42,11 @@ def create_quiz(driver):
             # Initalizes a new question maker object and creates a new question
             # as specified in the function call using question["Type"]
             maker = Question_maker(driver)
-            maker.new_question(question["Type"], question)
+            try:
+                maker.new_question(question["Type"], question)
+            except Exception as ex:
+                print(f"Error message for {question['Type']} in Section {name}: {ex}\n")
+                pass
             # maker.new_question("T/F", question)
             sleep(3)
             # break

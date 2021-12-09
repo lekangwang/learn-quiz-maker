@@ -16,11 +16,11 @@ shadow_driver = Shadow(driver)
 # Main function that is where all app operations happen
 # at a high level
 def run():
-    # login_user(driver)
-    # navigate_to_course_quizzes(shadow_driver, driver)
-    # navigate_to_quiz_library(shadow_driver, driver)
-    # create_sections(driver)
-    # shift_sections_to_top(driver)
+    login_user(driver)
+    navigate_to_course_quizzes(shadow_driver, driver)
+    navigate_to_quiz_library(shadow_driver, driver)
+    create_sections(driver)
+    shift_sections_to_top(driver)
     create_quiz(driver)
 
     # # Close the Chrome session after 5 seconds
