@@ -5,17 +5,13 @@ Solution: Enter this project, which is an automation bot that automates the buil
 
 ## Setup
 First download the .zip and extract my project by going to my project source code on my [GitHub profile](https://github.com/lekangwang/learn-quiz-maker). 
-
 Click "Code" -> "Download ZIP" and extract my project.
 
 This project requires use of the command line and a code text-editor. 
-
 Code text editor suggested: [Visual Studio Code](https://code.visualstudio.com/docs/setup/setup-overview) (by Microsoft)
-
 Click on the VSCode installer file and follow the instructions to install VSCode for both macOS and Windows 10. 
 
 Download Python3 [here](https://www.python.org/downloads/).
-
 Once you've reached the Python downloads page, hover over the "Downloads" tab in the navigation bar. It should automatically suggest the latest version download for your OS. Make sure to click on Python 3.X NOT 2.X.
 
 **THIS IS IMPORTANT**
@@ -26,17 +22,14 @@ To check if Python3 was successfully installed:
 **For both Windows 10 and macOS:**
 1. Find and open the Windows Powershell application
 2. Type the following and press ENTER
-
 ```bash 
 python3 --version
 ```
 
 3. Type the following and press ENTER
-
 ```bash
 pip --version
 ```
-
 If no error message(s) appear then Python 3 was installed successfully.
 
 **Open VSCode Integrated Terminal**
@@ -46,14 +39,12 @@ Open VSCode and select this project folder to be opened. Click on "View" in the 
 Now that we have Python 3 installed, we must now install some programs written by other developers for this project to work.
 
 Selenium is an automation framework that helps developers write code to automate QA tasks on websites. 
-
 Install Selenium 4 (type and ENTER):
 ```bash
 pip install selenium
 ```
 
 pyshadow is a code package that helps with working with LEARN's quirky HTML structure. 
-
 Install pyshadow (type and ENTER):
 ```bash
 pip install pyshadow
@@ -63,11 +54,9 @@ Type and ENTER:
 ```bash 
 pip list
 ```
-
 Check if Selenium and pyshadow are listed. 
 
 ## Usage
-
 There are 3 CSV files in this project:
 1. settings.csv inside the folder "navigation"
     - This file you will need to enter your UWaterloo email or your username that you use to login to your LEARN profile
