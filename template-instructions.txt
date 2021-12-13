@@ -1,2 +1,141 @@
 This file was meant for those to read more specifics on how to fill in the learn-quiz-template.xls sheet correct for each of the 8 different questions supported. 
 
+I suggest taking creating a new Excel workbook and naming it learn-quiz-template.xlsl, then open the learn-quiz-template.xlsl found inside this folder and copy and paste the question types that you want inside of your new quiz Excel document. Fill in the question just like how it's done inside the same Excel template in this project. 
+
+General Rules: 
+  - Any fields that you don't need to fill in, simply leave it blank
+  - Write all question configuration text (i.e. yes, no, true, false, all or nothing, right minus wrong) to be the most safe, please write them in lowercase
+  - Each question is alotted it's own row
+  - Lists of fields (i.e. option texts for multiple choice) must be written with parentheses around each text and connected with a dash "-", I call this format "text chain". For example, if you want to enter option text for 3 option fields you would write it as such: (text1)-(text2)-(text3), texts can also be blank as long as the text chain has enough parentheses that matches the Number of Options/Pairs/Text Fields field for that question.
+  - A text chain cannot have less than 2 texts
+
+Question Type Specific Rules
+True or False (T/F) 
+  Fields: 
+    - Question Text
+    - True Feedback
+      - Optional, leave blank if not needed
+    - False Feedback
+      - Optional, leave blank if not needed
+    - Correct Answer
+      - Enter "true" or "false"
+    - Points 
+    - Overall Feedback
+      - Optional, leave blank if not needed
+
+Multiple Choice (MC)
+  Fields: 
+    - Question Text
+    - Number of Options
+    - Randomize 
+      - Enter "yes" or "no"
+    - Options Text 
+      - Text chain length should match the Number of Options
+    - Feedback on Options 
+      - Optional, leave texts inside the text chain can be blank if you don't have feedback, but a text chain needs to exist in this field regardless
+    - Correct Answer
+      - Enter what place the correct answer is in looking at Option Text, for example if we have the text chain in Option Text (Incorrect)-(Incorrect)-(Correct) you would enter 3 in this field
+    - Points
+    - Overall Feedback
+      - Optional, leave blank if not needed
+
+Multi Select (M-S)
+  Fields: 
+    - Question Text
+    - Number of Options
+    - Randomize 
+      - Enter "yes" or "no"
+    - Options Text 
+      - Text chain length should match the Number of Options
+    - Feedback on Options 
+      - Optional, leave texts inside the text chain can be blank if you don't have feedback, but a text chain needs to exist in this field regardless
+    - Grading Method
+      - You have 4 options
+        - "right answers"
+        - "right answers limited selection"
+        - "right minus wrong"
+        - "all or nothing"
+    - Correct Answer
+      - Since there are multiple answers, add the answers as a text chain, answers are numbers and the numbers reflect the position the option is at in the Option Text text chain
+    - Points
+    - Overall Feedback
+      - Optional, leave blank if not needed
+
+
+Written Response (WR)
+  Fields: 
+    - Question Text
+    - Points
+    - Overall Feedback
+      - Optional, leave blank if not needed
+
+Short Answer (SA)
+  Fields: 
+    - Question Text
+    - Number of Text Fields
+    - Grading Method
+      - 2 options
+        - "all or nothing"
+        - "equally weighted"
+    - Correct Answer
+      - Enter as a text chain with texts that matches Number of Text Fields
+    - Points
+    - Overall Feedback
+      - Optional, leave blank if not needed
+
+Matching (MAT)
+  Fields: 
+    - Question Text
+    - Number of Pairs
+    - Options Text
+      - Enter as a text chain, remember to match the number of texts to Number of Pairs
+    - Grading Method
+      - 3 options
+        - "all or nothing"
+        - "right minus wrong"
+        - "equally weighted"
+    - Correct Answer
+      - Enter as a text chain in the order that corresponds to the Options Text text chain
+    - Points
+    - Title
+      - Optional, leave blank if not needed
+    
+Ordering (ORD)
+  Fields: 
+    - Question Text
+    - Number of Options
+    - Options Text
+      - Enter as a text chain, match with Number of Options
+    - Feedback on Options
+      - Enter as a text chain, match feedback in the order that corresponds with Options Text text chain
+    - Grading Method
+      - 3 options
+        - "all or nothing"
+        - "right minus wrong"
+        - "equally weighted"
+    - Points
+    - Title
+      - Optional, leave blank if not needed
+
+Likert (LIK)
+  Fields: 
+    - Question Text
+    - Number of Options
+    - Options Text
+      - Enter as a text chain, match Number of Options
+    - Title
+      - Optional, leave blank if not needed
+    - Scale Type
+      - 8 options
+        - "one to five"
+        - "one to eight"
+        - "one to ten"
+        - "agreement"
+        - "satisfaction"
+        - "frequency"
+        - "importance"
+        - "opposition"
+    - Enable N/A Option
+      - Enter "yes" or "no"
+
+
