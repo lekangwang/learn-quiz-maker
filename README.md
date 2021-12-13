@@ -1,25 +1,24 @@
 # LEARN Quiz Maker
-Problem Statement: Lots of teaching organizations use the LEARN learning management system to create and manage courses online. Quizzes are a major component of any instructional course, but everyone hates making them as they take too much time (often hours) to fill in and create questions. 
-
+Problem Statement: Lots of teaching organizations use the LEARN learning management system to create and manage courses online. Quizzes are a major component of any instructional course, but everyone hates making them as they take too much time (often hours) to fill in and create questions.\
 Solution: Enter this project, which is an automation bot that automates the building of quizzes given a set of quiz/section data in the form of CSV (comma separated values) files.
 
 ## Setup
-First download the .zip and extract my project by going to my project source code on my [GitHub profile](https://github.com/lekangwang/learn-quiz-maker). 
+First download the .zip and extract my project by going to my project source code on my [GitHub profile](https://github.com/lekangwang/learn-quiz-maker).\
 Click "Code" -> "Download ZIP" and extract my project.
 
-This project requires use of the command line and a code text-editor. 
+This project requires use of the command line and a code text-editor.\
 Code text editor suggested: [Visual Studio Code](https://code.visualstudio.com/docs/setup/setup-overview) (by Microsoft)
 Click on the VSCode installer file and follow the instructions to install VSCode for both macOS and Windows 10. 
 
-Download Python3 [here](https://www.python.org/downloads/).
+Download Python3 [here](https://www.python.org/downloads/).\
 Once you've reached the Python downloads page, hover over the "Downloads" tab in the navigation bar. It should automatically suggest the latest version download for your OS. Make sure to click on Python 3.X NOT 2.X.
 
-**THIS IS IMPORTANT**
+### THIS IS IMPORTANT
 For Windows 10 users, once the Python3 download file is clicked and an installation panel opens, please check off the option called "Add Python 3.X to PATH" before you finish the installation. 
 
 To check if Python3 was successfully installed: 
 
-###For both Windows 10 and macOS:###
+### For both Windows 10 and macOS:
 1. Find and open the Windows Powershell application
 2. Type the following and press ENTER
 ```bash 
@@ -32,19 +31,19 @@ pip --version
 ```
 If no error message(s) appear then Python 3 was installed successfully.
 
-###Open VSCode Integrated Terminal###
+### Open VSCode Integrated Terminal
 Open VSCode and select this project folder to be opened. Click on "View" in the actions bar on the top and click "Terminal". A terminal prompt should open up at the bottom in the VSCode window. This is where you will type further commands to configure/run this project.
 
-###Install Selenium 4 and pyshadow###
+### Install Selenium 4 and pyshadow
 Now that we have Python 3 installed, we must now install some programs written by other developers for this project to work.
 
-Selenium is an automation framework that helps developers write code to automate QA tasks on websites. 
+Selenium is an automation framework that helps developers write code to automate QA tasks on websites. \
 Install Selenium 4 (type and ENTER):
 ```bash
 pip install selenium
 ```
 
-pyshadow is a code package that helps with working with LEARN's quirky HTML structure. 
+pyshadow is a code package that helps with working with LEARN's quirky HTML structure. \
 Install pyshadow (type and ENTER):
 ```bash
 pip install pyshadow
