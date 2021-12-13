@@ -23,7 +23,7 @@ def run():
     shift_sections_to_top(driver)
     create_quiz(driver)
 
-    # # Close the Chrome session after 5 seconds
+    # Close the Chrome session after 5 seconds
     # sleep(120)
     # driver.quit()
 

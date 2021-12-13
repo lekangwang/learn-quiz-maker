@@ -1,0 +1,2 @@
+This file was meant for those to read more specifics on how to fill in the learn-quiz-template.xls sheet correct for each of the 8 different questions supported. 
+
