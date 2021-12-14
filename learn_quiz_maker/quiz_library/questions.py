@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import Select
 from time import sleep
 from learn_quiz_maker.helpers.parsers import parse_csv_round_braces
 from learn_quiz_maker.helpers.util import about, click_element_of_elements, focus_on_library_homepage, wait_until_page_fully_loaded
+import traceback
 
 class Question_maker: 
     def __init__(self, driver):
@@ -353,9 +354,15 @@ class Question_maker:
         grading_method = question_data["Grading Method"].lower()
         # Numbers
         points = int(question_data["Points"])
+        print(question_data["Number of Pairs"])
         num_pairs = int(question_data["Number of Pairs"])
-        # List
-        options_text = parse_csv_round_braces(question_data["Options Text"])
+        # List 
+        all_options_text = parse_csv_round_braces(question_data["Options Text"])
+        options_text = []
+        # Filter for only unique option values
+        for option in all_options_text:
+            if option not in options_text:
+                options_text.append(option)
         matching_text = parse_csv_round_braces(question_data["Correct Answer"])
 
         # Remove all options/matches except for 1 each
@@ -363,25 +370,29 @@ class Question_maker:
         print(f"Remove Choices: {len(remove_choice_btns)}")
         self.shadow_driver.scroll_to(remove_choice_btns[1])
         remove_choice_btns[1].click()
-        sleep(2)
+        wait_until_page_fully_loaded(self.driver, 10)
+        sleep(1)
         remove_match_btns = self.shadow_driver.find_elements("a[title^=\"Remove match\"]")
         print(f"Remove Matches: {len(remove_match_btns)}")
         self.shadow_driver.scroll_to(remove_match_btns[1])
         remove_match_btns[1].click()
-        sleep(2)
+        wait_until_page_fully_loaded(self.driver, 10)
+        sleep(1)
 
         # Add options/matches to match with num_pairs
-        for i in range(num_pairs - 1):
+        for i in range(len(options_text) - 1):
             add_choice_btn = self.shadow_driver.find_element("a[title=\"Add Choice\"]")
-            # self.driver.execute_script("arguments[0].scrollIntoView();", add_choice_btn)
             self.shadow_driver.scroll_to(add_choice_btn)
             add_choice_btn.click()
-            sleep(2)
+            wait_until_page_fully_loaded(self.driver, 10)
+            sleep(1)
+        
+        for i in range(num_pairs - 1):
             add_match_btn = self.shadow_driver.find_element("a[title=\"Add Match\"]")
-            # self.driver.execute_script("arguments[0].scrollIntoView();", add_match_btn)
             self.shadow_driver.scroll_to(add_match_btn)
             add_match_btn.click()
-            sleep(2)
+            wait_until_page_fully_loaded(self.driver, 10)
+            sleep(1)
 
         # Web elements declarations
         question_title_input = self.shadow_driver.find_element("#z_o")
@@ -390,10 +401,15 @@ class Question_maker:
         grading_method_choices = self.shadow_driver.find_elements(".d2l-radio-inline")
 
         option_matches_text_inputs = self.shadow_driver.find_elements(".d2l-htmleditor-wc[label^=\"Edit Entry\"]")
-        halfway_index = len(option_matches_text_inputs) // 2
+        halfway_index = len(options_text)
         option_text_inputs = option_matches_text_inputs[:halfway_index]
         match_text_inputs = option_matches_text_inputs[halfway_index:]
-
+        
+        # Select dropdowns
+        match_correct_choice_select = self.shadow_driver.find_elements(".d2l-select[name^=\"aMatch\"]")
+        for i in range(len(match_correct_choice_select)):
+            match_correct_choice_select[i] = Select(match_correct_choice_select[i])
+            
         print(f"Option inputs: {len(option_text_inputs)}")
         print(f"Matches inputs: {len(match_text_inputs)}")
 
@@ -411,8 +427,7 @@ class Question_maker:
         self.shadow_driver.scroll_to(question_text_input) 
         question_text_input.click()
         question_text_input.send_keys(question_text)
-
-        # self.driver.execute_script("arguments[0].scrollIntoView();", grading_method_choices[0])    
+  
         self.shadow_driver.scroll_to(grading_method_choices[0])
         if grading_method == "all or nothing":
             grading_method_choices[1].click()
@@ -421,17 +436,17 @@ class Question_maker:
         else:
             grading_method_choices[0].click()
         
-        for i in range(num_pairs):
-            # self.driver.execute_script("arguments[0].scrollIntoView();", option_text_inputs[i]) 
+        for i in range(len(options_text)):
             self.shadow_driver.scroll_to(option_text_inputs[i])   
             option_text_inputs[i].click()
             option_text_inputs[i].send_keys(options_text[i])
         
         for i in range(num_pairs):
-            # self.driver.execute_script("arguments[0].scrollIntoView();", match_text_inputs[i]) 
+            correct_answer = all_options_text[i]
             self.shadow_driver.scroll_to(match_text_inputs[i])   
             match_text_inputs[i].click()
             match_text_inputs[i].send_keys(matching_text[i])
+            match_correct_choice_select[i].select_by_index(options_text.index(correct_answer))
 
         click_element_of_elements(save_btns, "Save", "text")
         self.reset_frame()
@@ -539,15 +554,16 @@ class Question_maker:
             # self.driver.execute_script("arguments[0].scrollIntoView();", remove_option_btns[-1])
             self.shadow_driver.scroll_to(remove_option_btns[-1])
             remove_option_btns[-1].click()
-            sleep(2)
+            wait_until_page_fully_loaded(self.driver, 10)
+            sleep(1)
 
         # Add options until matching num_options
         for i in range(num_options - 1):
             add_option_btn = self.shadow_driver.find_element("a[title=\"Add Item\"]")
-            # self.driver.execute_script("arguments[0].scrollIntoView();", add_option_btn)
             self.shadow_driver.scroll_to(add_option_btn)
             add_option_btn.click()
-            sleep(2)
+            wait_until_page_fully_loaded(self.driver, 10)
+            sleep(1)
 
         # Web element declarations
         question_title_input = self.shadow_driver.find_element("#z_o")
@@ -561,8 +577,7 @@ class Question_maker:
         # Fill in ORD form
         question_title_input.click()
         question_title_input.send_keys(question_title)
-
-        # self.driver.execute_script("arguments[0].scrollIntoView();", default_points_input) 
+ 
         self.shadow_driver.scroll_to(default_points_input)   
         default_points_input.click()
         # Clear the default points field
@@ -572,8 +587,7 @@ class Question_maker:
         self.shadow_driver.scroll_to(question_text_input) 
         question_text_input.click()
         question_text_input.send_keys(question_text)
-
-        # self.driver.execute_script("arguments[0].scrollIntoView();", grading_method_choices[0])    
+  
         self.shadow_driver.scroll_to(grading_method_choices[0])
         if grading_method == "equally weighted":
             grading_method_choices[0].click()
@@ -583,7 +597,6 @@ class Question_maker:
             grading_method_choices[1].click()
         
         for (i, option) in enumerate(option_text_inputs):
-            # self.driver.execute_script("arguments[0].scrollIntoView();", option)
             self.shadow_driver.scroll_to(option)
             option.click()
             option.send_keys(options_text[i])
@@ -591,7 +604,6 @@ class Question_maker:
         print(f"Length of feedback_text_inputs: {len(feedback_text_inputs)}")
         feedback_text_inputs = feedback_text_inputs[0:-1]
         for (i, feedback) in enumerate(feedback_text_inputs):
-            # self.driver.execute_script("arguments[0].scrollIntoView();", feedback)
             self.shadow_driver.scroll_to(feedback)
             feedback.click()
             feedback.send_keys(feedback_text[i])
@@ -618,18 +630,18 @@ class Question_maker:
 
         # Remove the last option so that only one remains
         remove_option_btns = self.shadow_driver.find_elements("a[title^=\"Remove Entry\"]")
-        # self.driver.execute_script("arguments[0].scrollIntoView();", remove_option_btns[-1])
         self.shadow_driver.scroll_to(remove_option_btns[-1])
         remove_option_btns[-1].click()
-        sleep(2)
+        wait_until_page_fully_loaded(self.driver, 10)
+        sleep(1)
 
         # Add options until matching num_options
         for i in range(num_options - 1):
             add_option_btn = self.shadow_driver.find_element("a[title=\"Add Option\"]")
-            # self.driver.execute_script("arguments[0].scrollIntoView();", add_option_btn)
             self.shadow_driver.scroll_to(add_option_btn)
             add_option_btn.click()
-            sleep(2)
+            wait_until_page_fully_loaded(self.driver, 10)
+            sleep(1)
 
         # Web element declarations
         questions_title_input = self.shadow_driver.find_element("#z_o")
@@ -647,7 +659,6 @@ class Question_maker:
         questions_text_input.click()
         questions_text_input.send_keys(question_text)
 
-        # self.driver.execute_script("arguments[0].scrollIntoView();", scale_choices[0]) 
         self.shadow_driver.scroll_to(scale_choices[0])   
         if scale_type == "one to five":
             scale_choices[0].click()
@@ -667,12 +678,10 @@ class Question_maker:
             scale_choices[7].click()
 
         if enable_na == True:
-            # self.driver.execute_script("arguments[0].scrollIntoView();", enable_na_checkbox)
             self.shadow_driver.scroll_to(enable_na_checkbox)
             enable_na_checkbox.click()
 
-        for (i, option) in enumerate(option_text_inputs):
-            # self.driver.execute_script("arguments[0].scrollIntoView();", option)    
+        for (i, option) in enumerate(option_text_inputs): 
             self.shadow_driver.scroll_to(option)
             option.click()
             option.send_keys(options_text[i])
@@ -698,8 +707,6 @@ class Question_maker:
         for btn in new_question_btns:
             if btn.text != "":
                 if btn.text.split(" ")[-1] == "(" + question_type + ")" and btn.text.split(" ")[-1] != "(" + "FIB" + ")":
-                    # self.driver.execute_script('arguments[0].scrollTop = arguments[0].scrollHeight', self.shadow_driver.get_parent_element(btn))
-                    # btn.click()
                     self.driver.execute_script('arguments[0].click();', btn)
                     break
         
@@ -766,10 +773,10 @@ class Question_maker:
                 self.likert(question_data)
             else:
                 print("From new_question in Question_maker: No such question type was found!")
-        except Exception as ex:
+        except Exception:
             # Write error to errors.txt
             with open("learn_quiz_maker/quiz_library/errors.txt", "a") as file:
-                file.write(f"Question Type: {question_type}, Error message: {ex}\n")
+                file.write(f"Question Type: {question_type}, Error message: {traceback.format_exc()}\n")
             self.cancel_question_build(question_type)
             pass
         

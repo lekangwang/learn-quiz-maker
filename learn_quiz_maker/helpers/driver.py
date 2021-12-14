@@ -10,8 +10,8 @@ def create_driver():
     chrome_options = Options()
 
     # Debug chrome window version
-    chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
-    driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
+    # chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
+    # driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
 
-    # driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver = webdriver.Chrome(ChromeDriverManager().install())
     return driver

@@ -89,13 +89,16 @@ Matching (MAT)
     - Number of Pairs
     - Options Text
       - Enter as a text chain, remember to match the number of texts to Number of Pairs
+      - Texts inside the chain do NOT need to be unique as there might only be 2 options to match to (i.e. quantitative, qualitative)
+      - Enter text in the order that corresponds to the Correct Answer text chain
     - Grading Method
       - 3 options
         - "all or nothing"
         - "right minus wrong"
         - "equally weighted"
     - Correct Answer
-      - Enter as a text chain in the order that corresponds to the Options Text text chain
+      - Enter as a text chain, should match the order of Options Text
+      - Number of texts should match Number of Pairs
     - Points
     - Title
       - Optional, leave blank if not needed
