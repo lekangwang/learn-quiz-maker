@@ -109,8 +109,8 @@ class Question_maker:
 
         # Add enough options to match num_options (specified by csv file)
         add_answer_btn = self.shadow_driver.find_element(".d2l-button-subtle-content")
-        self.shadow_driver.scroll_to(add_answer_btn)
         for i in range(num_options - 1):
+            self.shadow_driver.scroll_to(add_answer_btn)
             add_answer_btn.click()
             sleep(1)
 
@@ -125,6 +125,7 @@ class Question_maker:
         save_btn = self.shadow_driver.find_element(".primary[name=\"Submit\"]")
 
         # Fill in MC form
+        self.shadow_driver.scroll_to(question_text_input)
         question_text_input.click()
         question_text_input.send_keys(question_text)
 
@@ -135,12 +136,14 @@ class Question_maker:
             feedback_text_inputs[i].click()
             feedback_text_inputs[i].send_keys(feedback_text[i])
 
+        self.shadow_driver.scroll_to(answer_checkboxes[correct_answer - 1])
         answer_checkboxes[correct_answer - 1].click()
 
         self.driver.execute_script("arguments[0].scrollIntoView();", randomize_checkbox) 
         if randomize == True:
             randomize_checkbox.click()
         
+        self.shadow_driver.scroll_to(overall_feedback_input)
         overall_feedback_input.click()
         overall_feedback_input.send_keys(overall_feedback)
         
@@ -185,8 +188,8 @@ class Question_maker:
 
         # Add option inputs according to num_options
         add_answer_btn = self.shadow_driver.find_element(".d2l-button-subtle-content")
-        self.shadow_driver.scroll_to(add_answer_btn)
         for i in range(num_options - 1):
+            self.shadow_driver.scroll_to(add_answer_btn)
             add_answer_btn.click()
             sleep(1)
 
@@ -202,6 +205,7 @@ class Question_maker:
         save_btn = self.shadow_driver.find_element(".primary[name=\"Submit\"]")
         
         # Fill in M-S form
+        self.shadow_driver.scroll_to(question_text_input)
         question_text_input.click()
         question_text_input.send_keys(question_text)
 
@@ -213,6 +217,7 @@ class Question_maker:
             feedback_text_inputs[i].send_keys(feedback_text[i])
            
         for answer in correct_answers:
+            self.shadow_driver.scroll_to(answer_checkboxes[answer - 1])
             answer_checkboxes[answer - 1].click()
         
         self.shadow_driver.scroll_to(save_btn)   
@@ -293,8 +298,8 @@ class Question_maker:
 
         # Add enough blanks to match num_text_fields
         add_blank_btn = self.shadow_driver.find_element("#add-blank")
-        self.shadow_driver.scroll_to(add_blank_btn)
         for i in range(num_text_fields - 1):
+            self.shadow_driver.scroll_to(add_blank_btn)
             add_blank_btn.click()
             sleep(1)
 
@@ -307,7 +312,8 @@ class Question_maker:
             grading_method_container = Select(self.shadow_driver.find_element("#qed-grading-type-selector"))
         save_btn = self.shadow_driver.find_element(".primary[name=\"Submit\"]")
 
-        # Fill in WR form
+        # Fill in SA form
+        self.shadow_driver.scroll_to(question_text_input)
         question_text_input.click()
         question_text_input.send_keys(question_text)
 
@@ -402,6 +408,7 @@ class Question_maker:
         self.driver.execute_script("arguments[0].value = ''", default_points_input)
         default_points_input.send_keys(points)
 
+        self.shadow_driver.scroll_to(question_text_input) 
         question_text_input.click()
         question_text_input.send_keys(question_text)
 
@@ -562,6 +569,7 @@ class Question_maker:
         self.driver.execute_script("arguments[0].value = ''", default_points_input)
         default_points_input.send_keys(points)
 
+        self.shadow_driver.scroll_to(question_text_input) 
         question_text_input.click()
         question_text_input.send_keys(question_text)
 
@@ -635,6 +643,7 @@ class Question_maker:
         questions_title_input.click()
         questions_title_input.send_keys(question_title)
 
+        self.shadow_driver.scroll_to(questions_text_input) 
         questions_text_input.click()
         questions_text_input.send_keys(question_text)
 
@@ -690,7 +699,8 @@ class Question_maker:
             if btn.text != "":
                 if btn.text.split(" ")[-1] == "(" + question_type + ")" and btn.text.split(" ")[-1] != "(" + "FIB" + ")":
                     # self.driver.execute_script('arguments[0].scrollTop = arguments[0].scrollHeight', self.shadow_driver.get_parent_element(btn))
-                    btn.click()
+                    # btn.click()
+                    self.driver.execute_script('arguments[0].click();', btn)
                     break
         
         wait_until_page_fully_loaded(self.driver, 10)
@@ -734,26 +744,33 @@ class Question_maker:
     def new_question(self, question_type, question_data):
         self.navigate_to_question_form(question_type)
 
-        # Call the appropriate function to fill the question form
-        if question_type == "T/F":
-            self.true_false(question_data)
-        elif question_type == "MC":
-            self.multiple_choice(question_data)
-        elif question_type == "M-S":
-            self.multi_select(question_data)
-        elif question_type == "WR":
-            self.written_answer(question_data)
-        elif question_type == "SA":
-            self.short_answer(question_data)
-        elif question_type == "MAT":
-            self.matching(question_data)
-        # elif question_type == "FIB":
-        #     self.fill_in_the_blanks(question_data)
-        elif question_type == "ORD":
-            self.ordered(question_data)
-        elif question_type == "LIK":
-            self.likert(question_data)
-        else:
-            print("From new_question in Question_maker: No such question type was found!")
+        try:
+            # Call the appropriate function to fill the question form
+            if question_type == "T/F":
+                self.true_false(question_data)
+            elif question_type == "MC":
+                self.multiple_choice(question_data)
+            elif question_type == "M-S":
+                self.multi_select(question_data)
+            elif question_type == "WR":
+                self.written_answer(question_data)
+            elif question_type == "SA":
+                self.short_answer(question_data)
+            elif question_type == "MAT":
+                self.matching(question_data)
+            # elif question_type == "FIB":
+            #     self.fill_in_the_blanks(question_data)
+            elif question_type == "ORD":
+                self.ordered(question_data)
+            elif question_type == "LIK":
+                self.likert(question_data)
+            else:
+                print("From new_question in Question_maker: No such question type was found!")
+        except Exception as ex:
+            # Write error to errors.txt
+            with open("learn_quiz_maker/quiz_library/errors.txt", "a") as file:
+                file.write(f"Question Type: {question_type}, Error message: {ex}\n")
+            self.cancel_question_build(question_type)
+            pass
         
         wait_until_page_fully_loaded(self.driver, 10)

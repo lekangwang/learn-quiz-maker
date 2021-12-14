@@ -56,7 +56,7 @@ pip list
 Check if Selenium and pyshadow are listed. 
 
 ## Usage
-There are 3 CSV files in this project:
+There are 3 CSV files in this project and 1 errors.txt file:
 1. settings.csv inside the folder "navigation"
     - This file you will need to enter your UWaterloo email or your username that you use to login to your LEARN profile
     - You will also need to the enter the **EXACT** name of the course you want quizzes to be made for. Specifically I mean the larger text inside the course cards on your LEARN homepage
@@ -66,7 +66,10 @@ There are 3 CSV files in this project:
     - Each row of this file is the data for 1 section folder. Please enter the information as I've done in the file already as an example.
 3. learn-quiz-template.csv inside the folder "quiz_library"
     - This csv file will hold ALL of the quiz question information for 1 quiz. All of your quiz content/settings will be written in an Excel file template that I have provided. Once filled in, please export the file as a plain CSV file (with the same name learn-quiz-template.csv) and replace that file into the "quiz_library" folder.
-    - Read more about specific instructions about how to fill in the LEARN quiz template Excel sheet in the template-instructions.txt file. 
+    - Read more about specific instructions about how to fill in the LEARN quiz template Excel sheet in the template-instructions.txt file inside the folder "docs". 
+3. errors.txt inside the folder "quiz_library"
+    - File where you will find all the unsuccessfully made quiz questions and their associated error messages
+    - My program will automatically skip to the next question if an error is encountered so execution will always complete
 
 To run the program after configuring/adding all 3 of the necessary CSV files in the correct folders, run the following command inside the integrated terminal inside VSCode to execute the build process. 
 
@@ -74,6 +77,8 @@ Type and ENTER:
 ```bash
 python3 -m learn_quiz_maker
 ```
+
+You will be required to enter your password manually (for security reasons) and perform the DUO two-authentication process within 2 minutes so please have those things ready. After logging in, the program will perform the rest of the actions automatically without further intervention. 
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

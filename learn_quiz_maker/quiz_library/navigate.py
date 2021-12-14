@@ -143,9 +143,12 @@ def shift_sections_to_top(driver):
 
     # print(f"num_shift: {num_shift}")
 
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+
     # Click on all newly created sections
     for i in range(len(sections_checkboxes) - 1, len(sections_checkboxes) - num_sections - 1, -1):
-        sections_checkboxes[i].click()
+        # sections_checkboxes[i].click()
+        driver.execute_script('arguments[0].click();', sections_checkboxes[i])
     
     # Shift up the new sections to the top
     for i in range(num_shift):

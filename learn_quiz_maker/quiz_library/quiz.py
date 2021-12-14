@@ -21,6 +21,10 @@ def create_quiz(driver):
     # LOCATION: QUIZ LIBRARY HOMEPAGE, SWITCH DRIVER TO IT
     focus_on_library_homepage(driver)
 
+    # Remove all contents from the errors.txt file
+    with open("learn_quiz_maker/quiz_library/errors.txt", "r+") as file:
+        file.truncate(0)
+
     # Navigate to each section listed the learn quiz template csv file
     for name in section_names:
         # Create new shadow driver and find all sections visible on the quiz library homepage
@@ -42,11 +46,7 @@ def create_quiz(driver):
             # Initalizes a new question maker object and creates a new question
             # as specified in the function call using question["Type"]
             maker = Question_maker(driver)
-            try:
-                maker.new_question(question["Type"], question)
-            except Exception as ex:
-                print(f"Error message for {question['Type']} in Section {name}: {ex}\n")
-                pass
+            maker.new_question(question["Type"], question)
             # maker.new_question("T/F", question)
             sleep(3)
             # break
