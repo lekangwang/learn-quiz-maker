@@ -35,7 +35,7 @@ If no error message(s) appear then Python 3 was installed successfully.
 ### Open VSCode Integrated Terminal
 Open VSCode and select this project folder to be opened. Click on "View" in the actions bar on the top and click "Terminal". A terminal prompt should open up at the bottom in the VSCode window. This is where you will type further commands to configure/run this project.
 
-### Install Selenium 4 and pyshadow
+### Install Selenium 4, pyshadow, webdriver-manager
 Now that we have Python 3 installed, we must now install some programs written by other developers for this project to work.
 
 Selenium is an automation framework that helps developers write code to automate QA tasks on websites. \
@@ -50,11 +50,17 @@ Install pyshadow (type and ENTER):
 pip install pyshadow
 ```
 
+webdriver-manager is a code package that will automatically download the appropriate drivers needed for your Chrome browser version to work with Selenium. \
+Install webdriver-manager (type and ENTER):
+```bash
+pip install webdriver-manager
+```
+
 Type and ENTER:
 ```bash 
 pip list
 ```
-Check if Selenium and pyshadow are listed. 
+Check if Selenium 4.0, pyshadow and webdriver-manager are listed. 
 
 ## Usage
 There are 3 CSV files in this project and 1 errors.txt file:
