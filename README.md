@@ -5,7 +5,7 @@ Solution: Enter this project, which is an automation bot that automates the buil
 
 ## Setup
 First download the .zip and extract my project by going to my project source code on my [GitHub profile](https://github.com/lekangwang/learn-quiz-maker).\
-Click "Code" -> "Download ZIP" and extract my project.
+Click "Code" -> "Download ZIP" and extract my project. Make sure to change the title of the project folder from "learn-quiz-maker-main" to just "learn-quiz-maker".
 
 This project requires use of the command line and a code text-editor.\
 Code text editor suggested: [Visual Studio Code](https://code.visualstudio.com/docs/setup/setup-overview) (by Microsoft)
