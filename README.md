@@ -19,8 +19,21 @@ For Windows 10 users, once the Python3 download file is clicked and an installat
 
 To check if Python3 was successfully installed: 
 
-### For both Windows 10 and macOS:
-1. Find and open the Windows Powershell application
+### For Windows 10:
+1. Find and open the Command Prompt (Powershell) application
+2. Type the following and press ENTER
+```bash 
+py --version or python --version (whichever one works)
+```
+
+3. Type the following and press ENTER
+```bash
+pip --version
+```
+If no error message(s) appear then Python 3 was installed successfully.
+
+### For macOS
+1. Find and open the Terminal application
 2. Type the following and press ENTER
 ```bash 
 python3 --version
@@ -35,11 +48,14 @@ If no error message(s) appear then Python 3 was installed successfully.
 ### Open VSCode Integrated Terminal
 Open VSCode and select this project folder to be opened. Click on "View" in the actions bar on the top and click "Terminal". A terminal prompt should open up at the bottom in the VSCode window. This is where you will type further commands to configure/run this project.
 
+**Note: Windows 10 and VSCode Integrated Terminal Issues** 
+In Windows 10, current Python installations might have trouble providing commands you can use in the VSCode integrated terminal. If you find that an error occurs when running installation commands in the integrated terminal, try executing the following installation commands inside the Command Prompt you already have open where you checked your Python install version.
+
 ### Install Selenium 4, pyshadow, webdriver-manager
 Now that we have Python 3 installed, we must now install some programs written by other developers for this project to work.
 
 Selenium is an automation framework that helps developers write code to automate QA tasks on websites. \
-Install Selenium 4 (type and ENTER):
+Install Selenium (type and ENTER):
 ```bash
 pip install selenium
 ```
@@ -60,7 +76,7 @@ Type and ENTER:
 ```bash 
 pip list
 ```
-Check if Selenium 4.0, pyshadow and webdriver-manager are listed. 
+Check if Selenium, pyshadow and webdriver-manager are listed. 
 
 ## Usage
 There are 3 CSV files in this project and 1 errors.txt file:
@@ -80,12 +96,22 @@ There are 3 CSV files in this project and 1 errors.txt file:
 
 To run the program after configuring/adding all 3 of the necessary CSV files in the correct folders, run the following command inside the integrated terminal inside VSCode to execute the build process. 
 
+**For Windows 10**
+Type and ENTER:
+```bash
+py -m learn_quiz_maker
+```
+
+**For macOS**
 Type and ENTER:
 ```bash
 python3 -m learn_quiz_maker
 ```
 
 You will be required to enter your password manually (for security reasons) and perform the DUO two-authentication process within 2 minutes so please have those things ready. After logging in, the program will perform the rest of the actions automatically without further intervention. 
+
+**IMPORTANT**
+If you need to end the Quiz Maker script at any time, type **Ctrl (or CMD) + C** in the VS Code Terminal. 
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
