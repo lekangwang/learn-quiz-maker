@@ -1,7 +1,7 @@
 # LEARN Quiz Maker
 Problem Statement: Lots of teaching organizations use the LEARN learning management system to create and manage courses online. Quizzes are a major component of any instructional course, but everyone hates making them as they take too much time (often hours) to fill in and create questions.
 
-Solution: Enter this project, which is an automation bot that automates the building of quizzes given a set of quiz/section data in the form of CSV (comma separated values) files.
+Solution: I built an automation bot that automates the building of quizzes given a set of quiz/section data in the form of CSV (comma separated values) files.
 
 ## Setup
 First download the .zip and extract my project by going to my project source code on my [GitHub profile](https://github.com/lekangwang/learn-quiz-maker).\
